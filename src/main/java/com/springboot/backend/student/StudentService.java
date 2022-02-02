@@ -2,8 +2,10 @@ package com.springboot.backend.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,5 +39,32 @@ public class StudentService {
             throw new IllegalStateException("Student with id No. " + studentId + " does not exist.");
         }
         studentRepository.deleteById(studentId);
+    }
+
+    @Transactional
+    public void updateStudent(Long studentId, String name, String email){
+
+       Student student = studentRepository.findById(studentId)
+               .orElseThrow(()->new IllegalStateException("Student with id No. " + studentId + " does not exist."));
+
+        if(name != null &&
+                name.length() >0 &&
+                !student.getName().equals(name)){
+            student.setName(name);
+        }
+
+        if(email != null &&
+                name.length() >0 &&
+                !student.getEmail().equals(email)){
+            Optional studentOptional = studentRepository.findStudentByEmail(email);
+            if(studentOptional.isPresent()){
+                throw new IllegalStateException("Email taken.");
+            }
+            student.setEmail(email);
+        }
+
+
+
+
     }
 }
