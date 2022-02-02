@@ -1,10 +1,12 @@
 package com.springboot.backend.student;
 
 import com.sun.tools.javac.util.List;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
 
+@Service
 public class StudentService {
 
     public List<Student> getStudents(){
